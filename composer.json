@@ -1,0 +1,15 @@
+{
+  "name": "magnetion/steam-notifier",
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "classmap": [
+      "src/Controllers"
+    ],
+    "psr-4": {
+      "Magnetion\\SteamNotifier\\": "src/",
+      "Models\\": "src/Models/"
+    }
+  }
+}
