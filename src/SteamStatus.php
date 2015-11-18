@@ -12,6 +12,12 @@ class SteamStatus extends Command {
 
     public function fire()
     {
+        $client = new \GuzzleHttp\Client();
+        $request = $client->createRequest('GET','http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=A94F94888F3D761B40F5B9613E381FE7&steamids=76561197960435530');
+
+        $response = $client->send($request);
+        dd($response->getBody()->getContents());
+
         $this->info('Works');
     }
 
