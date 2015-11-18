@@ -5,7 +5,6 @@
   },
   "autoload": {
     "classmap": [
-      "src/Controllers"
     ],
     "psr-4": {
       "Magnetion\\SteamNotifier\\": "src/",
