@@ -52,9 +52,29 @@ class SteamStatus extends Command {
             ->where('steam_id', env('STEAM_ID'))
             ->update(['in_game' => $status, 'game_id' => $game_id, 'game_name' => $game_name, 'updated' => time()]);
 
-        dd(env('STEAM_ID'));
+        // check to see if notification needs to be sent
+        if($currentStatus != $status) :
+            if($status == 1) :
+                $pushMessage = 'In Game: ' . $game_name;
+            else :
+                $pushMessage = 'No longer playing game';
+            endif;
 
-        $this->info('Works');
+            // send to Pushover
+            curl_setopt_array($ch = curl_init(), array(
+                CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+                CURLOPT_POSTFIELDS => array(
+                    "token" => env('PUSHOVER_API_KEY'),
+                    "user" => env('PUSHOVER_USER_KEY'),
+                    "message" => $pushMessage,
+                ),
+                CURLOPT_SAFE_UPLOAD => true,
+            ));
+            curl_exec($ch);
+            curl_close($ch);
+        endif;
+
+        $this->info('Complete');
     }
 
 
