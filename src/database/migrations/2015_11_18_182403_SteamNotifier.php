@@ -15,11 +15,11 @@ class SteamNotifier extends Migration
         Schema::create('steam_log', function(Blueprint $table)
         {
             $table->increments('id');
-            $table->integer('steam_id');
+            $table->string('steam_id', 50);
             $table->integer('in_game');
             $table->integer('game_id')->nullable();
             $table->string('game_name', 255)->nullable();
-            $table->timestamps();
+            $table->integer('updated');
         });
     }
 
