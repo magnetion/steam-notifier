@@ -1,8 +1,17 @@
 {
   "name": "magnetion/steam-notifier",
+  "type": "library",
+  "description": "Laravel 5 package to send you a Pushover notification when in game Steam status changes",
+  "keywords": ["laravel","Pushover","Steam"],
+  "homepage": "http://magnetion.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mike Fleming"
+    }
+  ],
   "require": {
-    "php": ">=5.4.0",
-    "da-mitchell/steam-api": "2.*"
+    "php": ">=5.4.0"
   },
   "autoload": {
     "classmap": [
