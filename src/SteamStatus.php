@@ -60,18 +60,32 @@ class SteamStatus extends Command {
                 $pushMessage = 'No longer playing game';
             endif;
 
-            // send to Pushover
-            curl_setopt_array($ch = curl_init(), array(
-                CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-                CURLOPT_POSTFIELDS => array(
-                    "token" => env('PUSHOVER_API_KEY'),
-                    "user" => env('PUSHOVER_USER_KEY'),
-                    "message" => $pushMessage,
-                ),
-                CURLOPT_SAFE_UPLOAD => true,
-            ));
-            curl_exec($ch);
-            curl_close($ch);
+            if(env('STEAM_NOTIFY_METHOD') == 'pushover') :
+                // send to Pushover
+                curl_setopt_array($ch = curl_init(), array(
+                    CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+                    CURLOPT_POSTFIELDS => array(
+                        "token" => env('PUSHOVER_API_KEY'),
+                        "user" => env('PUSHOVER_USER_KEY'),
+                        "message" => $pushMessage,
+                    ),
+                    CURLOPT_SAFE_UPLOAD => true,
+                ));
+                curl_exec($ch);
+                curl_close($ch);
+            else :
+                // send to Slack
+                $settings = [
+                    'username' => env('STEAM_SLACK_USERNAME'),
+                    'channel' => '#'.env('STEAM_SLACK_CHANNEL'),
+                    'link_names' => true,
+                    'icon' => ':ghost:'
+                ];
+
+                // send to slack
+                $client = new \Maknz\Slack\Client(env('STEAM_SLACK_WEBHOOK'), $settings);
+                $client->send($pushMessage);
+            endif;
         endif;
 
         $this->info('Complete');
